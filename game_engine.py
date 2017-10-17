@@ -8,7 +8,7 @@ game engine class
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-from game_object import game_object as go
+from game_object import game_object, button
 import time
 
 class game_engine():
@@ -37,11 +37,13 @@ class game_engine():
         # Initialise Pygame window
         pygame.init()
 
+        self.clock = pygame.time.Clock()
+
         #Set screen size to be the screen resolution
         size_info = pygame.display.Info()
         self.SCREEN_SIZE=(size_info.current_w,size_info.current_h)
         self.object_size = 20
-        #self.SCREEN_SIZE=(1024,720)
+        #self.SCREEN_SIZE=(486,864)
         self.right = False
         self.left = False
 
@@ -52,9 +54,25 @@ class game_engine():
         self.screen_rect = self.screen.get_rect()
         self.keys = pygame.key.get_pressed()
         #Add square to object list
-        self.objects.append(go(self.screen, [self.SCREEN_SIZE[0]/2.0, self.SCREEN_SIZE[1]/2.0], [0,0], self.OBJECT_COLOR, self.object_size))
+
+        self.player = game_object(self.screen, self.SCREEN_SIZE, [486/2.0, 864/2.0], [0,0], self.OBJECT_COLOR, self.object_size)
+
+        self.objects.append(self.player)
+        
         #Reset floor height based on new screen size
-        self.floor_height = self.SCREEN_SIZE[1]/2.0
+        self.floor_height = 864 - 864/10.0
+
+        sizeX = (self.SCREEN_SIZE[0]/2.0)-2
+        sizeY = 864/10.0-4
+
+        self.botaoEsquerda = button(self.screen, self.SCREEN_SIZE, (100,100,100), [2+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
+        self.objects.append(self.botaoEsquerda)
+
+        sizeX = (self.SCREEN_SIZE[0]/2.0)-2
+        sizeY = 864/10.0-4
+
+        self.botaoDireita = button(self.screen, self.SCREEN_SIZE, (100,100,100), [(sizeX+2)+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
+        self.objects.append(self.botaoDireita)
 
     """handle key presses"""
     def event_loop(self):
@@ -66,21 +84,25 @@ class game_engine():
             if (event.type == pygame.MOUSEBUTTONDOWN) and event.button == 1:
                 x, y = event.pos
 
-                if y < self.SCREEN_SIZE[1]/2.0:
+                if y < self.floor_height:
                     self.objects[0].jump()
 
-                if y > self.SCREEN_SIZE[1]/2.0:
+                if y > self.floor_height:
                     if x > self.SCREEN_SIZE[0]/2.0:
+                        self.botaoDireita.ligar()
                         self.right = True
                     if x < self.SCREEN_SIZE[0]/2.0:
+                        self.botaoEsquerda.ligar()
                         self.left = True
 
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 x, y = event.pos
-                if y > self.SCREEN_SIZE[1]/2.0:
+                if y > self.floor_height:
                     if x > self.SCREEN_SIZE[0]/2.0:
+                        self.botaoDireita.desligar()
                         self.right = False
                     if x < self.SCREEN_SIZE[0]/2.0:
+                        self.botaoEsquerda.desligar()
                         self.left = False
 
             #If the key pressed is the android back button, kill the program
@@ -89,8 +111,6 @@ class game_engine():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.done = True
-
-            print self.right
 
         if self.right:
             self.objects[0].right()
@@ -103,20 +123,19 @@ class game_engine():
         newtime = time.time()
         dt = newtime-self.gametime
         self.gametime = newtime
-        #take one timestep for each object in the objects list
-        for gameobject in self.objects:
-            # x = x_0 + v_0*dt + 0.5*g*dt^2 
-            gameobject.position[1] = gameobject.position[1] + gameobject.velocity[1]*dt + 0.5*self.gravity*dt**2
-            # v = v_0 + g*dt 
-            gameobject.velocity[1] = gameobject.velocity[1] + self.gravity*dt
-            #make sure it doesn't go through the floor
-            if gameobject.position[1] > self.floor_height:
-                gameobject.position[1] = self.floor_height
-                gameobject.velocity[1] = 0.0
 
-            if gameobject.position[1] < 0:
-                gameobject.position[1] = 0
-                gameobject.velocity[1] = 0.0
+        # x = x_0 + v_0*dt + 0.5*g*dt^2 
+        self.player.position[1] = self.player.position[1] + self.player.velocity[1]*dt + 0.5*self.gravity*dt**2
+        # v = v_0 + g*dt 
+        self.player.velocity[1] = self.player.velocity[1] + self.gravity*dt
+        #make sure it doesn't go through the floor
+        if self.player.position[1] > self.floor_height-70:
+            self.player.position[1] = self.floor_height-70
+            self.player.velocity[1] = 0.0
+
+        if self.player.position[1] < 0:
+            self.player.position[1] = 0
+            self.player.velocity[1] = 0.0
             
     """main game loop"""
     def game_loop(self):
@@ -124,7 +143,7 @@ class game_engine():
             #set background color
             self.screen.fill(self.BACKGROUND_COLOR)
             #draw floor
-            pygame.draw.line(self.screen, self.GROUND_COLOR, (0,self.SCREEN_SIZE[1]/2.0+self.object_size/2.0), (self.SCREEN_SIZE[0],self.SCREEN_SIZE[1]/2.0+self.object_size/2.0))
+            pygame.draw.line(self.screen, self.GROUND_COLOR, (0,self.floor_height), (self.SCREEN_SIZE[0],self.floor_height))
             #check for and handle button presses
             self.event_loop()
             #advance the time for all objects
@@ -133,6 +152,8 @@ class game_engine():
             for gameobject in self.objects:
                 gameobject.draw()
             pygame.display.update()
+
+            self.clock.tick(self.fps)
             
     def quit_game(self):
         pygame.display.quit()
