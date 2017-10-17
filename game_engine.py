@@ -47,6 +47,9 @@ class game_engine():
         self.right = False
         self.left = False
 
+        self.ratioX = self.SCREEN_SIZE[0] / 486.0
+        self.ratioY = self.SCREEN_SIZE[1] / 864.0
+
         #os.environ["SDL_VIDO_CENTERED"] = "TRUE"
         #Finish initialising pygame
         pygame.display.set_caption(self.CAPTION)
@@ -62,13 +65,13 @@ class game_engine():
         #Reset floor height based on new screen size
         self.floor_height = 864 - 864/10.0
 
-        sizeX = (self.SCREEN_SIZE[0]/2.0)-2
+        sizeX = (486/2.0)-2
         sizeY = 864/10.0-4
 
         self.botaoEsquerda = button(self.screen, self.SCREEN_SIZE, (100,100,100), [2+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
         self.objects.append(self.botaoEsquerda)
 
-        sizeX = (self.SCREEN_SIZE[0]/2.0)-2
+        sizeX = (486/2.0)-2
         sizeY = 864/10.0-4
 
         self.botaoDireita = button(self.screen, self.SCREEN_SIZE, (100,100,100), [(sizeX+2)+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
@@ -84,10 +87,10 @@ class game_engine():
             if (event.type == pygame.MOUSEBUTTONDOWN) and event.button == 1:
                 x, y = event.pos
 
-                if y < self.floor_height:
+                if y < self.floor_height * self.ratioY:
                     self.objects[0].jump()
 
-                if y > self.floor_height:
+                if y > self.floor_height * self.ratioY:
                     if x > self.SCREEN_SIZE[0]/2.0:
                         self.botaoDireita.ligar()
                         self.right = True
@@ -142,8 +145,6 @@ class game_engine():
         while not self.done:
             #set background color
             self.screen.fill(self.BACKGROUND_COLOR)
-            #draw floor
-            pygame.draw.line(self.screen, self.GROUND_COLOR, (0,self.floor_height), (self.SCREEN_SIZE[0],self.floor_height))
             #check for and handle button presses
             self.event_loop()
             #advance the time for all objects
