@@ -8,7 +8,7 @@ game engine class
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-from game_object import button, Bullet, qualquercoisa
+from game_object import button, Bullet, qualquercoisa, enemy
 from objects import estrela
 import time
 import random
@@ -69,19 +69,28 @@ class game_engine():
         sizeX = (486/3.0)-2
         sizeY = 864/10.0-4
 
-        self.botaoEsquerda = button(self.screen, self.SCREEN_SIZE, (100,100,100), [2+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
+        self.botaoEsquerda = button(self.screen, self.SCREEN_SIZE, 'images/direction_button_pressed.png', 'images/direction_button.png', [2, 2+self.floor_height])
+
+        self.botaoEsquerda.ligado = pygame.transform.flip(self.botaoEsquerda.ligado, True, False)
+        self.botaoEsquerda.desligado = pygame.transform.flip(self.botaoEsquerda.desligado, True, False)
+        self.botaoEsquerda.imagem.image = pygame.transform.flip(self.botaoEsquerda.imagem.image, True, False)
+
         self.objects.append(self.botaoEsquerda)
 
-        self.botaoDireita = button(self.screen, self.SCREEN_SIZE, (100,100,100), [(sizeX+2)+(sizeX+2)+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
-        self.objects.append(self.botaoDireita)
-
-        self.botaoCentro = button(self.screen, self.SCREEN_SIZE, (255,0,0), [(sizeX+3)+sizeX/2, 2+self.floor_height+sizeY/2], [sizeX, sizeY])
+        self.botaoCentro = button(self.screen, self.SCREEN_SIZE, 'images/shoot_pressed.png', 'images/shoot.png', [163, 2+self.floor_height])
         self.objects.append(self.botaoCentro)
 
-        self.botaoTeste = button(self.screen, self.SCREEN_SIZE, (255,255,255), [0, 0], [50, 50])
-        self.objects.append(self.botaoTeste)
+        self.botaoDireita = button(self.screen, self.SCREEN_SIZE, 'images/direction_button_pressed.png', 'images/direction_button.png', [324, 2+self.floor_height])
+        self.objects.append(self.botaoDireita)
+
+        
+
+        '''self.botaoTeste = button(self.screen, self.SCREEN_SIZE, (255,255,255), [0, 0], [50, 50])
+        self.objects.append(self.botaoTeste)'''
 
         self.naveali = qualquercoisa(self.screen, self.SCREEN_SIZE, [470/2.0, 848/2.0], [0, 0], (255,255,255))
+
+        self.enemy = enemy(self.screen, self.SCREEN_SIZE, [470/2.0, 20], [0, 0], (255,255,255))
 
         self.estrelas = []
         self.bullets = []
@@ -94,7 +103,7 @@ class game_engine():
         for event in pygame.event.get():
 
             #if(event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION or event.type == pygame.MOUSEBUTTONUP or event.type == pygame.MOUSEWHEEL):
-            self.botaoTeste.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+            #self.botaoTeste.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
             #print event.which
 
             #self.lastEvent = str(event.type)
@@ -247,7 +256,8 @@ class game_engine():
 
             #Draw all objects
             for gameobject in self.objects:
-                gameobject.draw()
+                gameobject.update()
+                gameobject.draw(self.screen)
 
             for bullet in self.bullets:
                 bullet.update()
@@ -259,6 +269,9 @@ class game_engine():
 
             self.naveali.update()
             self.naveali.draw(self.screen)
+
+            self.enemy.update()
+            self.enemy.draw(self.screen)
 
             pygame.display.update()
 
