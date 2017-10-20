@@ -77,12 +77,28 @@ class button():
         pygame.draw.rect(self.screen, self.color, position)
 
     def ligar(self):
-        self.color = (self.color_init[0]+100,self.color_init[1]+100,self.color_init[2]+100)
+        r = self.color_init[0]+100
+        g = self.color_init[1]+100
+        b = self.color_init[2]+100
+
+        if r > 255:
+            r = 255
+
+        if g > 255:
+            g = 255
+
+        if b > 255:
+            b = 255
+
+        self.color = (r,g,b)
 
     def desligar(self):
         self.color = self.color_init
 
 class estrela():
+
+    def teste():
+        print "lol"
 
     def __init__(self, screen, screenSize, position=[0,0]):
         self.position = position
@@ -109,84 +125,28 @@ class estrela():
         
         self.position[1] += self.velocity
 
-class Player(pygame.sprite.Group):
+class Bullet():
 
-    width = 32
-    height = 28
+    def __init__(self,screen,screenSize,position=[0,0]):
 
-    def __init__(self, x, y):
+        self.screen = screen
+        self.color = (0,255,0)
+        self.screenSize = screenSize
+        self.position = position
+        self.size = (1,2)
 
-        super(Player,self).__init__()
+    def update(self):
 
-        self.group = pygame.sprite.Group()
-        
-        base = pygame.sprite.Sprite()
+        self.position[1] -= 10
 
-        base.image = pygame.Surface([self.width, 8])
+    def draw(self):
 
-        base.rect = base.image.get_rect()
+        ratioX = self.screenSize[0] / 486.0
+        ratioY = self.screenSize[1] / 864.0
 
-        base.rect.x = x
-        base.rect.y = y + 24
+        self.lolX = self.size[0]*ratioX
+        self.lolY = self.size[1]*ratioY
 
-        self.base = base
+        position = ((self.position[0]*ratioX)-self.lolX/2.0, (self.position[1]*ratioY)-self.lolY/2.0, self.lolX, self.lolY)
 
-        self.group.add(self.base)
-
-        base = pygame.sprite.Sprite()
-
-        base.image = pygame.Surface([6, 22])
-
-        base.rect = base.image.get_rect()
-
-        base.rect.x = x + 14
-        base.rect.y = y + 2
-
-        self.tronco = base
-
-        self.group.add(self.tronco)
-
-        self.imagem = pygame.sprite.Sprite()
-
-        self.imagem.image = pygame.image.load('images/mainship_t.png')
-
-        self.imagem.rect = self.imagem.image.get_rect()
-
-        self.imagem.rect.x = x
-        self.imagem.rect.y = y
-
-        self.pos = [False,False,False,False]
-
-        self.add(self.imagem)
-
-    def right(self):
-
-        self.position[0] += 10
-
-        if self.position[0] > 454:
-            self.position[0] -= 10
-        else:
-            for sprite in self.group_grey:
-                sprite[0] += 10
-            for sprite in self.group_darkblue:
-                sprite[0] += 10
-            for sprite in self.group_darkgrey:
-                sprite[0] += 10
-            for sprite in self.group_purple:
-                sprite[0] += 10
-
-    def left(self):
-
-        self.position[0] -= 10
-
-        if 0 > self.position[0]:
-            self.position[0] += 10
-        else:
-            for sprite in self.group_grey:
-                sprite[0] -= 10
-            for sprite in self.group_darkblue:
-                sprite[0] -= 10
-            for sprite in self.group_darkgrey:
-                sprite[0] -= 10
-            for sprite in self.group_purple:
-                sprite[0] -= 10
+        pygame.draw.rect(self.screen, self.color, position)
