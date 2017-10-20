@@ -8,7 +8,7 @@ game engine class
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-from game_object import game_object, button, estrela, Bullet, qualquercoisa
+from game_object import button, estrela, Bullet, qualquercoisa
 import time
 import random
 
@@ -61,13 +61,7 @@ class game_engine():
         self.screen = pygame.display.set_mode(self.SCREEN_SIZE)
         self.screen_rect = self.screen.get_rect()
         self.keys = pygame.key.get_pressed()
-        #Add square to object list
-
-        self.player = game_object(self.screen, self.SCREEN_SIZE, [486/2.0, 864/2.0], [0,0], self.OBJECT_COLOR, self.object_size)
-        #self.player = Player(486/2.0, 864/2.0, self.screen, self.SCREEN_SIZE)
-
-        #self.objects.append(self.player)
-        
+       
         #Reset floor height based on new screen size
         self.floor_height = 864 - 864/10.0
 
@@ -178,11 +172,9 @@ class game_engine():
                     self.done = True
 
         if self.right:
-            self.player.right()
             self.naveali.right()
 
         if self.left:
-            self.player.left()
             self.naveali.left()
     
     """update velocity and position of all game objects"""
@@ -191,29 +183,20 @@ class game_engine():
         dt = newtime-self.gametime
         self.gametime = newtime
 
-        ratioPosition = self.player.velocity[1]*dt + 0.5*self.gravity*dt**2
         ratioPosition = self.naveali.velocity[1]*dt + 0.5*self.gravity*dt**2
         ratioVelocity = self.gravity*dt
 
         # x = x_0 + v_0*dt + 0.5*g*dt^2 
-        self.player.position[1] += ratioPosition
         self.naveali.position[1] += ratioPosition
         # v = v_0 + g*dt 
-        self.player.velocity[1] += ratioVelocity
         self.naveali.velocity[1] += ratioVelocity
         #make sure it doesn't go through the floor
         if self.naveali.position[1] > self.floor_height-70:
-
-            self.player.position[1] = self.floor_height-70
             self.naveali.position[1] = self.floor_height-70
-
-            self.player.velocity[1] = 0.0
             self.naveali.velocity[1] = 0.0
 
         if 0 > self.naveali.position[1]:
-            self.player.position[1] = 0
             self.naveali.position[1] = 0
-            self.player.velocity[1] = 0.0
             self.naveali.velocity[1] = 0.0
             
     """main game loop"""
