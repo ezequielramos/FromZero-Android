@@ -39,7 +39,7 @@ class game_engine():
         pygame.init()
 
         self.clock = pygame.time.Clock()
-        self.lastEvent = ""
+        #self.lastEvent = ""
 
         self.touching = []
 
@@ -48,6 +48,7 @@ class game_engine():
         self.SCREEN_SIZE=(size_info.current_w,size_info.current_h)
         self.object_size = 20
         #self.SCREEN_SIZE=(486,864)
+        #self.SCREEN_SIZE=(243,432)
         self.right = False
         self.left = False
 
@@ -85,7 +86,7 @@ class game_engine():
         self.botaoTeste = button(self.screen, self.SCREEN_SIZE, (255,255,255), [0, 0], [50, 50])
         self.objects.append(self.botaoTeste)
 
-        self.naveali = qualquercoisa(self.screen, self.SCREEN_SIZE, [470/2.0, 848/2.0], [50, 50], (255,255,255))
+        self.naveali = qualquercoisa(self.screen, self.SCREEN_SIZE, [470/2.0, 848/2.0], [0, 0], (255,255,255))
 
         self.estrelas = []
         self.bullets = []
@@ -106,7 +107,7 @@ class game_engine():
             #Add keys pressed to self.keys so we can access it outside of this function (this is currently not used)
             self.keys = pygame.key.get_pressed()
 
-            self.lastEvent = []
+            '''self.lastEvent = []
 
             if (event.type == 1792 or event.type == 1793):
                 #print str(event)
@@ -118,7 +119,7 @@ class game_engine():
                     self.lastEvent.append(textobemgrande[0:50])
                     textobemgrande = textobemgrande[50:]
 
-                self.lastEvent.append(textobemgrande)
+                self.lastEvent.append(textobemgrande)'''
 
 
 
@@ -147,7 +148,7 @@ class game_engine():
                         self.touching.append([clickId,"left"])
                     else:
                         self.botaoCentro.ligar()
-                        self.bullets.append(Bullet(self.screen,self.SCREEN_SIZE,[self.player.position[0],self.player.position[1]]))
+                        self.bullets.append(Bullet(self.screen,self.SCREEN_SIZE,[self.naveali.position[0]+16,self.naveali.position[1]]))
                         self.touching.append([clickId,"shot"])
 
             if (event.type == pygame.MOUSEBUTTONUP or event.type == pygame.FINGERUP):
@@ -178,9 +179,11 @@ class game_engine():
 
         if self.right:
             self.player.right()
+            self.naveali.right()
 
         if self.left:
             self.player.left()
+            self.naveali.left()
     
     """update velocity and position of all game objects"""
     def update_physics(self):
@@ -189,20 +192,29 @@ class game_engine():
         self.gametime = newtime
 
         ratioPosition = self.player.velocity[1]*dt + 0.5*self.gravity*dt**2
+        ratioPosition = self.naveali.velocity[1]*dt + 0.5*self.gravity*dt**2
         ratioVelocity = self.gravity*dt
 
         # x = x_0 + v_0*dt + 0.5*g*dt^2 
         self.player.position[1] += ratioPosition
+        self.naveali.position[1] += ratioPosition
         # v = v_0 + g*dt 
         self.player.velocity[1] += ratioVelocity
+        self.naveali.velocity[1] += ratioVelocity
         #make sure it doesn't go through the floor
-        if self.player.position[1] > self.floor_height-70:
-            self.player.position[1] = self.floor_height-70
-            self.player.velocity[1] = 0.0
+        if self.naveali.position[1] > self.floor_height-70:
 
-        if 0 > self.player.position[1]:
-            self.player.position[1] = 0
+            self.player.position[1] = self.floor_height-70
+            self.naveali.position[1] = self.floor_height-70
+
             self.player.velocity[1] = 0.0
+            self.naveali.velocity[1] = 0.0
+
+        if 0 > self.naveali.position[1]:
+            self.player.position[1] = 0
+            self.naveali.position[1] = 0
+            self.player.velocity[1] = 0.0
+            self.naveali.velocity[1] = 0.0
             
     """main game loop"""
     def game_loop(self):
@@ -214,7 +226,7 @@ class game_engine():
             #advance the time for all objects
             self.update_physics()
 
-            textoY = 50
+            '''textoY = 50
 
             group = pygame.sprite.Group()
 
@@ -236,7 +248,7 @@ class game_engine():
 
                 textoY += 70
 
-            group.draw(self.screen)
+            group.draw(self.screen)'''
 
             #draw stars
             for eachestrela in self.estrelas:
@@ -261,8 +273,7 @@ class game_engine():
                 else:
                     bullet.draw()
 
-            self.player.draw()
-
+            self.naveali.update()
             self.naveali.draw(self.screen)
 
             pygame.display.update()

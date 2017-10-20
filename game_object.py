@@ -124,6 +124,30 @@ class qualquercoisa(pygame.sprite.Group):
 
         self.add(self.imagem)
 
+    def update(self):
+
+        ratioX = self.screenSize[0] / 486.0
+        ratioY = self.screenSize[1] / 864.0
+
+        self.imagem.rect.x = self.position[0]*ratioX
+        self.imagem.rect.y = self.position[1]*ratioY
+
+    def right(self):
+        self.position[0] += 10
+
+        if self.position[0] > 486:
+            self.position[0] = 486
+
+    def left(self):
+        self.position[0] -= 10
+
+        if self.position[0] < 0:
+            self.position[0] = 0
+
+    #make the object jump
+    def jump(self):
+        self.velocity[1] -= 200
+
 class estrela():
 
     def teste():
