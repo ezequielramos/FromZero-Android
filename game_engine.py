@@ -8,7 +8,7 @@ game engine class
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-from game_object import game_object, button, estrela, Bullet
+from game_object import game_object, button, estrela, Bullet, qualquercoisa
 import time
 import random
 
@@ -84,6 +84,8 @@ class game_engine():
 
         self.botaoTeste = button(self.screen, self.SCREEN_SIZE, (255,255,255), [0, 0], [50, 50])
         self.objects.append(self.botaoTeste)
+
+        self.naveali = qualquercoisa(self.screen, self.SCREEN_SIZE, [470/2.0, 848/2.0], [50, 50], (255,255,255))
 
         self.estrelas = []
         self.bullets = []
@@ -260,6 +262,8 @@ class game_engine():
                     bullet.draw()
 
             self.player.draw()
+
+            self.naveali.draw(self.screen)
 
             pygame.display.update()
 

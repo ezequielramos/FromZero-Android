@@ -95,6 +95,35 @@ class button():
     def desligar(self):
         self.color = self.color_init
 
+class qualquercoisa(pygame.sprite.Group):
+
+    def __init__(self, screen, screenSize, position=[0,0], velocity=[0,0], color = (0,0,0), size = 20):
+
+        super(qualquercoisa,self).__init__()
+
+        #store the values that are input into the function
+        self.position = position
+        self.velocity = velocity
+        self.screen = screen
+        self.color = color
+        self.screenSize = screenSize
+        self.size = size
+        self.size_info = pygame.display.Info()
+
+        self.imagem = pygame.sprite.Sprite()
+        self.imagem.image = pygame.image.load('android-icon.png')
+
+        ratioX = self.screenSize[0] / 486.0
+        ratioY = self.screenSize[1] / 864.0
+
+        self.imagem.image = pygame.transform.scale(self.imagem.image, (32*ratioX,32*ratioY))
+        self.imagem.rect = self.imagem.image.get_rect()
+
+        self.imagem.rect.x = position[0]*ratioX
+        self.imagem.rect.y = position[1]*ratioY
+
+        self.add(self.imagem)
+
 class estrela():
 
     def teste():
