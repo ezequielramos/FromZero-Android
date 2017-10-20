@@ -8,7 +8,8 @@ game engine class
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-from game_object import button, estrela, Bullet, qualquercoisa
+from game_object import button, Bullet, qualquercoisa
+from objects import estrela
 import time
 import random
 
@@ -85,7 +86,7 @@ class game_engine():
         self.estrelas = []
         self.bullets = []
         for i in range(0,100):
-            self.estrelas.append(estrela(self.screen,self.SCREEN_SIZE,[random.randint(1,486),random.randint(1,864)]))
+            self.estrelas.append(estrela.estrela(self.screen,self.SCREEN_SIZE,[random.randint(1,486),random.randint(1,864)]))
 
     """handle key presses"""
     def event_loop(self):
@@ -262,7 +263,7 @@ class game_engine():
             pygame.display.update()
 
             if 100 > len(self.estrelas):
-                self.estrelas.append(estrela(self.screen,self.SCREEN_SIZE,[random.randint(1,486),0]))
+                self.estrelas.append(estrela.estrela(self.screen,self.SCREEN_SIZE,[random.randint(1,486),0]))
 
             self.clock.tick(self.fps)
 
