@@ -111,7 +111,7 @@ class qualquercoisa(pygame.sprite.Group):
         self.size_info = pygame.display.Info()
 
         self.imagem = pygame.sprite.Sprite()
-        self.imagem.image = pygame.image.load('android-icon.png')
+        self.imagem.image = pygame.image.load('images/mainship_t.png')
 
         ratioX = self.screenSize[0] / 486.0
         ratioY = self.screenSize[1] / 864.0
