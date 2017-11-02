@@ -10,7 +10,7 @@ import pygame
 
 class button(pygame.sprite.Group):
 
-    def __init__(self, screen, screenSize, image_on, image_off, position=[0,0]):
+    def __init__(self, screen, screenSize, image_on, image_off, position):
 
         super(button,self).__init__()
 
@@ -108,15 +108,13 @@ class qualquercoisa(pygame.sprite.Group):
 
 class enemy(pygame.sprite.Group):
 
-    def __init__(self, screen, screenSize, position=[0,0], velocity=[0,0], color = (0,0,0), size = 20):
+    def __init__(self, screen, screenSize, position, size = 20):
 
         super(enemy,self).__init__()
 
         #store the values that are input into the function
         self.position = position
-        self.velocity = velocity
         self.screen = screen
-        self.color = color
         self.initialDegree = 0
         self.screenSize = screenSize
         self.size = size
@@ -164,7 +162,7 @@ class enemy(pygame.sprite.Group):
 
 class Bullet():
 
-    def __init__(self,screen,screenSize,position=[0,0]):
+    def __init__(self,screen,screenSize,position):
 
         self.screen = screen
         self.color = (0,255,0)

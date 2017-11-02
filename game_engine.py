@@ -62,7 +62,7 @@ class game_engine():
         self.screen = pygame.display.set_mode(self.SCREEN_SIZE)
         self.screen_rect = self.screen.get_rect()
         self.keys = pygame.key.get_pressed()
-       
+
         #Reset floor height based on new screen size
         self.floor_height = 864 - 864/10.0
 
@@ -80,14 +80,9 @@ class game_engine():
         self.botaoDireita = button(self.screen, self.SCREEN_SIZE, 'images/direction_button_pressed.png', 'images/direction_button.png', [324, 2+self.floor_height])
         self.objects.append(self.botaoDireita)
 
-        
-
-        '''self.botaoTeste = button(self.screen, self.SCREEN_SIZE, (255,255,255), [0, 0], [50, 50])
-        self.objects.append(self.botaoTeste)'''
-
         self.naveali = qualquercoisa(self.screen, self.SCREEN_SIZE, [470/2.0, 848/2.0], [0, 0], (255,255,255))
 
-        self.enemy = enemy(self.screen, self.SCREEN_SIZE, [470/2.0, 20], [0, 0], (255,255,255))
+        self.enemy = enemy(self.screen, self.SCREEN_SIZE, [470/2.0, 20])
 
         self.estrelas = []
         self.bullets = []
@@ -106,22 +101,6 @@ class game_engine():
 
             #Add keys pressed to self.keys so we can access it outside of this function (this is currently not used)
             self.keys = pygame.key.get_pressed()
-
-            '''self.lastEvent = []
-
-            if (event.type == 1792 or event.type == 1793):
-                #print str(event)
-                #self.lastEvent = str(event)
-
-                textobemgrande = str(event)
-
-                while len(textobemgrande) > 50:
-                    self.lastEvent.append(textobemgrande[0:50])
-                    textobemgrande = textobemgrande[50:]
-
-                self.lastEvent.append(textobemgrande)'''
-
-
 
             #If the key is a left mouse click or android touch make the square jump
             if (event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.FINGERDOWN):

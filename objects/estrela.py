@@ -3,10 +3,7 @@ pygame_sdl2.import_as_pygame()
 import pygame
 import random
 
-class estrela():
-
-    def teste():
-        print "lol"
+class estrela(object):
 
     def __init__(self, screen, screenSize, position):
         self.position = position
@@ -30,5 +27,5 @@ class estrela():
         pygame.draw.rect(self.screen, self.color, position)
 
     def descer(self):
-        
+
         self.position[1] += self.velocity
