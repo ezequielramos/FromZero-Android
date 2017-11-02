@@ -8,7 +8,7 @@ class estrela():
     def teste():
         print "lol"
 
-    def __init__(self, screen, screenSize, position=[0,0]):
+    def __init__(self, screen, screenSize, position):
         self.position = position
         self.screen = screen
         self.color = (255,255,255)
