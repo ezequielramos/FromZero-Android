@@ -132,7 +132,7 @@ class game_engine():
                     clickId = event.fingerId
                 else:
                     x, y = event.pos
-                    clickId = event.which                  
+                    clickId = event.which
 
                 if y > self.floor_height * self.ratioY:
                     if x > (self.SCREEN_SIZE[0]/3.0)*2:
