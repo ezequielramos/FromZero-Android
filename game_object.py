@@ -7,7 +7,6 @@ game object
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
-import random
 
 class button(pygame.sprite.Group):
 
@@ -56,7 +55,7 @@ class button(pygame.sprite.Group):
 
 class qualquercoisa(pygame.sprite.Group):
 
-    def __init__(self, screen, screenSize, position=[0,0], velocity=[0,0], color = (0,0,0), size = 20):
+    def __init__(self, screen, screenSize, position, velocity, color = (0,0,0), size = 20):
 
         super(qualquercoisa,self).__init__()
 
@@ -153,7 +152,7 @@ class enemy(pygame.sprite.Group):
         self.imagem.image = pygame.transform.rotate(self.imagem.image, self.initialDegree)
 
         #self.imagem.image = pygame.transform.scale(self.imagem.image, (32*ratioX,32*ratioY))
-        
+
         self.imagem.rect = self.imagem.image.get_rect()
 
         self.imagem.rect.center = (0,0)
@@ -162,9 +161,6 @@ class enemy(pygame.sprite.Group):
         self.imagem.rect.y += self.position[1]*ratioY
 
         #self.imagem.rect = self.imagem.image.get_rect()
-
-        '''self.imagem.rect.x = self.position[0]*ratioX
-        self.imagem.rect.y = self.position[1]*ratioY'''
 
 class Bullet():
 
