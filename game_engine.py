@@ -66,9 +66,6 @@ class game_engine():
         #Reset floor height based on new screen size
         self.floor_height = 864 - 864/10.0
 
-        sizeX = (486/3.0)-2
-        sizeY = 864/10.0-4
-
         self.botaoEsquerda = button(self.screen, self.SCREEN_SIZE, 'images/direction_button_pressed.png', 'images/direction_button.png', [2, 2+self.floor_height])
 
         self.botaoEsquerda.ligado = pygame.transform.flip(self.botaoEsquerda.ligado, True, False)
@@ -94,10 +91,9 @@ class game_engine():
 
         self.estrelas = []
         self.bullets = []
-        for i in range(0,100):
+        for _ in range(0,100):
             self.estrelas.append(estrela.estrela(self.screen,self.SCREEN_SIZE,[random.randint(1,486),random.randint(1,864)]))
 
-    """handle key presses"""
     def event_loop(self):
         #For each event that has happened(each keystroke):
         for event in pygame.event.get():
@@ -130,16 +126,13 @@ class game_engine():
             #If the key is a left mouse click or android touch make the square jump
             if (event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.FINGERDOWN):
                 #x, y = event.pos
-                try:
+                if event.type == pygame.FINGERDOWN:
                     x = event.x * self.SCREEN_SIZE[0]
                     y = event.y * self.SCREEN_SIZE[1]
-                except:
-                    x, y = event.pos
-
-                try:
                     clickId = event.fingerId
-                except:
-                    clickId = event.which
+                else:
+                    x, y = event.pos
+                    clickId = event.which                  
 
                 if y > self.floor_height * self.ratioY:
                     if x > (self.SCREEN_SIZE[0]/3.0)*2:
@@ -157,9 +150,9 @@ class game_engine():
 
             if (event.type == pygame.MOUSEBUTTONUP or event.type == pygame.FINGERUP):
 
-                try:
+                if event.type == pygame.FINGERUP:
                     clickId = event.fingerId
-                except:
+                else:
                     clickId = event.which
 
                 for touch in self.touching:
@@ -186,8 +179,7 @@ class game_engine():
 
         if self.left:
             self.naveali.left()
-    
-    """update velocity and position of all game objects"""
+
     def update_physics(self):
         newtime = time.time()
         dt = newtime-self.gametime
@@ -196,9 +188,9 @@ class game_engine():
         ratioPosition = self.naveali.velocity[1]*dt + 0.5*self.gravity*dt**2
         ratioVelocity = self.gravity*dt
 
-        # x = x_0 + v_0*dt + 0.5*g*dt^2 
+        # x = x_0 + v_0*dt + 0.5*g*dt^2
         self.naveali.position[1] += ratioPosition
-        # v = v_0 + g*dt 
+        # v = v_0 + g*dt
         self.naveali.velocity[1] += ratioVelocity
         #make sure it doesn't go through the floor
         if self.naveali.position[1] > self.floor_height-70:
@@ -208,8 +200,7 @@ class game_engine():
         if 0 > self.naveali.position[1]:
             self.naveali.position[1] = 0
             self.naveali.velocity[1] = 0.0
-            
-    """main game loop"""
+
     def game_loop(self):
         while not self.done:
             #set background color
@@ -218,30 +209,6 @@ class game_engine():
             self.event_loop()
             #advance the time for all objects
             self.update_physics()
-
-            '''textoY = 50
-
-            group = pygame.sprite.Group()
-
-            for texto in self.lastEvent:
-
-                font = pygame.font.Font("DejaVuSans.ttf", 24)
-                text = font.render(texto, True, (255, 255, 255, 255))
-
-                base = pygame.sprite.Sprite()
-
-                base.image = text
-
-                base.rect = base.image.get_rect()
-
-                base.rect.x = 50
-                base.rect.y = textoY                
-
-                group.add(base)
-
-                textoY += 70
-
-            group.draw(self.screen)'''
 
             #draw stars
             for eachestrela in self.estrelas:
@@ -280,7 +247,7 @@ class game_engine():
 
             self.clock.tick(self.fps)
 
-            
+    @classmethod
     def quit_game(self):
         pygame.display.quit()
         pygame.quit()
