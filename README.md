@@ -9,3 +9,8 @@ A game implementation built in Python using pygame, pygame_sdl2 and rapt for bui
 https://github.com/renpy/pygame_sdl2
 
 https://github.com/renpy/rapt
+
+![](https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png | width=100)
+
+![android-icon.png](screenshots/screenshot1.png | width=100 )
+![android-icon.png](screenshots/screenshot0.png | width=100 )
