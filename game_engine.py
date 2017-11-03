@@ -191,7 +191,7 @@ class game_engine():
 
             #draw stars
             for eachestrela in self.estrelas:
-                
+
                 eachestrela.descer()
 
                 if eachestrela.position[1] > self.floor_height:
