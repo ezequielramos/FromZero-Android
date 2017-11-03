@@ -12,3 +12,5 @@ https://github.com/renpy/rapt
 
 # Screenshots:
 
+![android-icon.png](screenshots/screenshot1.png)
+![android-icon.png](screenshots/screenshot0.png)
