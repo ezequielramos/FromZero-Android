@@ -10,7 +10,7 @@ https://github.com/renpy/pygame_sdl2
 
 https://github.com/renpy/rapt
 
-# Screenshots:
+## Screenshots:
 
 <table>
 <tr>
