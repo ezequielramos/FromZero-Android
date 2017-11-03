@@ -15,7 +15,7 @@ https://github.com/renpy/rapt
 <table>
 <tr>
 	<td><img src="screenshots/screenshot1.png" width="270px" height="480px"></td>
-	<td><img src="screenshots/screenshot0.png" width="270px" height="480px"><td>
+	<td><img src="screenshots/screenshot0.png" width="270px" height="480px"></td>
 </tr>
 </table>
 
