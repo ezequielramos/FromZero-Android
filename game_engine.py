@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Idea fair simple android game
-@author: Chris Minar
-game engine class
-"""
-
 import pygame_sdl2
 pygame_sdl2.import_as_pygame()
 import pygame
@@ -48,7 +41,7 @@ class game_engine():
         size_info = pygame.display.Info()
         self.SCREEN_SIZE=(size_info.current_w,size_info.current_h)
         self.object_size = 20
-        #self.SCREEN_SIZE=(486,864)
+        self.SCREEN_SIZE=(486,864)
         #self.SCREEN_SIZE=(243,432)
         self.right = False
         self.left = False
